@@ -49,3 +49,25 @@ func AverageNumber(input string) float64 {
 	average := sum / float64(count)
 	return average
 }
+
+/*
+WholeStory takes the string, and returns a text that is composed from all the text words separated by spaces,
+e.g. story called for the string 1-hello-2-world should return text: "hello world".
+
+Estimate to complete: 30m.
+Completed in: 14m.
+*/
+func WholeStory(input string) string {
+	r := regexp.MustCompile("[a-zA-Z]+")
+	words := r.FindAllString(input, -1)
+	finalString := ""
+	count := len(words)
+	for i := 0; i < count; i++ {
+		if i == count-1 {
+			finalString += words[i]
+		} else {
+			finalString += fmt.Sprintf("%s ", words[i])
+		}
+	}
+	return finalString
+}
