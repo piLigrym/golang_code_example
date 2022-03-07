@@ -2,6 +2,7 @@ package functions
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 )
@@ -70,4 +71,66 @@ func WholeStory(input string) string {
 		}
 	}
 	return finalString
+}
+
+/*
+StoryStats returns four things:
+	-the shortest word
+	-the longest word
+	-the average word length
+	-the list (or empty list) of all words from the story that have the length the same as the average length rounded up and down.
+
+Estimate to complete: 40m.
+Completed in: 29m.
+*/
+func StoryStats(input string) StringStats {
+	r := regexp.MustCompile("[a-zA-Z]+")
+	words := r.FindAllString(input, -1)
+	count := len(words)
+
+	shortest := words[0]
+	longest := words[0]
+	averageLen := 0.0
+
+	lenSum := 0
+	var averageLenWords []string
+
+	lenToWord := make(map[int][]string)
+
+	for i := 0; i < count; i++ {
+		word := words[i]
+		wordLen := len(word)
+
+		// check if word shortest
+		if wordLen < len(shortest) {
+			shortest = word
+		}
+
+		// check if word longest
+		if wordLen > len(longest) {
+			longest = word
+		}
+
+		// calculate sum of all len
+		lenSum += wordLen
+
+		// store len to word
+		lenToWord[wordLen] = append(lenToWord[wordLen], word)
+	}
+
+	// calculate average value of lens
+	averageLen = float64(lenSum) / float64(count)
+	// get round up and down
+	averageRoundUp := int(math.Ceil(averageLen))
+	averageRoundDown := int(math.Floor(averageLen))
+
+	averageLenWords = append(averageLenWords, lenToWord[averageRoundUp]...)
+	averageLenWords = append(averageLenWords, lenToWord[averageRoundDown]...)
+
+	return StringStats{
+		shortest,
+		longest,
+		averageLen,
+		averageLenWords,
+	}
 }

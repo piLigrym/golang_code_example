@@ -31,3 +31,19 @@ func TestWholeStoryCorrect(t *testing.T) {
 		t.Errorf("Unccorect story: %s expected %s", result, expectedValue)
 	}
 }
+
+func TestStoryStatsCorrect(t *testing.T) {
+	result := StoryStats("1-hello-2-worldaa-45-ff-44-rrrr")
+	if result.shortestWord != "ff" {
+		t.Errorf("Unccorect stat shortest")
+	}
+	if result.longestWord != "worldaa" {
+		t.Errorf("Unccorect stat longest")
+	}
+	if result.averageWordLength != 4.5 {
+		t.Errorf("Unccorect stat average")
+	}
+	if result.wordsAverageLength[0] != "hello" && result.wordsAverageLength[1] != "rrrr" {
+		t.Errorf("Unccorect stat wordsAverageLength")
+	}
+}
